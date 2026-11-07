@@ -1,0 +1,22 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+
+# generated media / assets (not in the repo)
+ref/song.mp3
+ref/song16k.wav
+v2/img/
+v2/masks/
+v2/tmp/
+v2/vid/
+v2/fonts/
+v2/lyrics_times.txt
+*.mp4
+*.mov
+*.wav
+*.mp3
+*.png
+*.jpg
+*.jpeg

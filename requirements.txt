@@ -1,0 +1,6 @@
+numpy
+pillow
+requests
+
+# optional: background removal for parallax masks (heavy, pulls onnxruntime)
+# rembg
