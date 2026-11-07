@@ -1,10 +1,34 @@
 # 深海少女 MV · 手绘风 AI 动画管线
 
+> **EN**: Pipeline code for a hand-drawn-style AI music video: storyboard → image generation → anatomy QA → layered parallax → beat-synced render. **Code only** — no song, lyrics, character art or rendered video (copyright). Needs your own assets and an OpenAI-compatible relay.
+
 把一首歌做成「手绘动画感」MV 的完整管线：**分镜 → 出图 → 解剖质检 → 分层 → 运镜合成 → 卡点剪辑 → 手写字幕**。
 
 这是《深海少女》手书 MV 的真实工程代码（v1 与 v2 两版），开源的是**代码、分镜数据和提示词**。
 
 > **仓库里不包含**歌曲音频、歌词、角色设定图、AI 分镜图片和成片——版权和体积原因，见下面「不包含什么」。
+
+## 能不能直接用？先看这里
+
+| 你想做的事 | 现在能不能 |
+|---|---|
+| 看这套 MV 怎么做、抄思路 | ✅ 能，代码和分镜表都在这 |
+| 拿分镜表 / 提示词改自己的视频 | ✅ 能，`v2/shotlist.py` 和 `v2/prompts.py` 直接改 |
+| `git clone` 下来直接跑出片 | ❌ 不行，缺素材（音频 / 分镜图 / 字体）和 API key |
+| 接自己的模型跑完整条管线 | ⚠️ 能，但要改几处，见下 |
+
+跑起来至少要准备：
+
+1. Python 3.10+，`pip install -r requirements.txt`；跑 `masks.py` 还要 `pip install rembg`
+2. `ref/song.mp3`（你有版权的音频）+ `v2/lyrics_times.txt`（可先照 `lyrics_times.example.txt` 填）
+3. 分镜图：用 `paint.py` 生成，或自己画好后放进 `v2/img/<key>.png`
+4. 字体：`v2/fonts/KleeOne-SemiBold.ttf`、`LXGWWenKai-Medium.ttf`（都是开源字体，自行下载）
+5. 一个兼容 OpenAI 接口的中转。代码里写死的是当时用的模型名，换成你自己的：
+   - 出图：`gpt-image-2` / `gpt-image-2.6-sunburst` → 改 `v2/scripts/creds.py` 的 `IMAGE_MODELS` 和 `v2/prompts.py` 的 `model_for()`
+   - 视觉质检：`gpt-6.1-sol` → 改 `v2/scripts/qa.py`
+   - 歌词对齐交叉验证：`gemini-3.8-flash` → 改 `v1/align_gemini.py` 或 `v2/scripts/consensus.py`
+
+另外：这是**实际工程文件**，不是打包好的库。里面还留着一些一次性脚本（probe / 检查用的），路径和字体名是按当时的 Windows 环境写的，换机器可能要顺手改一下。
 
 ## 目录
 
